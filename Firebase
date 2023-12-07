@@ -1,0 +1,56 @@
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBDPRljxskjrqX27AZk1HGjB4jP7jDCMHk",
+  authDomain: "login15601-37199.firebaseapp.com",
+  projectId: "login15601-37199",
+  storageBucket: "login15601-37199.appspot.com",
+  messagingSenderId: "168997799875",
+  appId: "1:168997799875:web:65f3c54799bf00ad7b9f76"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+const Login = () =>{
+    const [email, setEmail] =useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(()=>{
+        if (!firebase.app.length){
+            initializeApp(firebaseConfig);
+        }
+    }, []);
+
+    const handleLogin = async () =>{
+        try {
+            const response = await firebase.auth().signInWithEmailAndPassword(email, password);
+            alert('BIENVENIDO, INICIO DE SESION EXITOSO');
+            console.log('INICIO DE SESION EXITOSO ' , response.user);
+        }catch(error){
+            alert('USUARIO Y/O CONTRASEÑA INCORRECTO');
+            console.error('Error durante el inicio de sesion ' , error.message);
+            //Puedes manejar el error de inicio aqui
+        }
+    };
+    
+    return (
+        <div>
+            <h2 className = 'login'>Login</h2>
+            <label>Email:</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <br/>
+            <label>Password:</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <br/>
+            <button className='botoncito' onClick={handleLogin}>Login</button>
+        </div>
+    )
+}
+
+export default Login;
