@@ -1,0 +1,107 @@
+import './App.css';
+import Fecha from './componentes/componenteFch';
+import Datos from './componentes/componenteDato';
+import React, { useState} from 'react';
+import ComponenteForm from './componentes/componenteForm';
+import EdadPerro from './componentes/componenteEdPer';
+import Contador from './componentes/componenteCont';
+import PokemonSearch from './componentes/PokemonSearch';
+import RickAndMorty from './componentes/RickAndMorty';
+import Login from './componentes/firebase/Login';
+
+function App() {
+  const [operaciones, setOperacion] = useState([])
+  function calcular(event){
+    event.preventDefault();
+    const edadH = parseInt(event.target.valor1.value, 10)
+    const edadP = (edadH) * 7
+    const nuevo = {
+      resultado: edadP,
+      valor1: edadH
+    }
+    setOperacion([nuevo,...operaciones])
+    event.target.valor1.value='';
+  }
+    
+  const [datos, setDatos] = useState({nombre: '', materia:''})
+  const [isAgeModuleEnabled, setAgeModuleEnabled] = useState (false);
+  const [isDateModuleEnabled, setDateModuleEnabled] = useState (false);
+  const [isFormModuleEnabled, setFormModuleEnabled] = useState (false);
+  const [isPokemonModuleEnabled, setPokemonModuleEnabled] = useState (false);
+  const [isRickAndMortyModuleEnabled, setRickAndMortyModuleEnabled] = useState (false);
+  const [isLoginModuleEnabled, setLoginModuleEnabled] = useState (false);
+  
+  const toggleAgeModule=()=>{
+    setAgeModuleEnabled (!isAgeModuleEnabled);
+  };
+  const toggleDateModule=()=>{
+    setDateModuleEnabled (!isDateModuleEnabled);
+  };
+  const toggleFormModule = () => {
+    setFormModuleEnabled (!isFormModuleEnabled);
+  };
+
+  const togglePokemonModule = () => {
+    setPokemonModuleEnabled (!isPokemonModuleEnabled);
+  };
+
+  const toggleRickAndMortyEnabled = () => {
+    setRickAndMortyModuleEnabled (!isRickAndMortyModuleEnabled);
+  };
+
+  const toggleLoginEnabled = () => {
+    setLoginModuleEnabled (!isLoginModuleEnabled);
+  };
+
+  const handleFormSubmit =(data) =>{
+    setDatos(data);
+  }
+
+  return(
+    <section id='General'>
+      <header className="App-header">
+    <div>
+      <h1 className='Encabezado'>Hola esta es mi primera práctica en React</h1>
+
+      <button className='my-button' onClick={toggleAgeModule}>
+        {isAgeModuleEnabled ? 'Deshabilitar Módulo Edad Canina' : 'Habilitar Módulo Edad Canina'}
+      </button>
+      {isAgeModuleEnabled && <><form onSubmit={calcular}>
+        <p>Ingrese su edad: <input type="text" name="valor1" /></p>
+        <input className='my-button' type="submit" value="Calcular" />
+      </form><EdadPerro resultados={operaciones} /></>}
+
+      <button className='my-button' onClick={toggleDateModule}>
+        {isDateModuleEnabled ? 'Deshabilitar Módulo Fecha' : 'Habilitar Módulo Fecha'}
+      </button>
+      {isDateModuleEnabled && <Fecha/>}
+
+      <button className='my-button' onClick={toggleFormModule}>
+        {isFormModuleEnabled ? 'Deshabilitar Módulo Formulario' : 'Habilitar Módulo Formulario'}
+      </button>
+      {isFormModuleEnabled && <><ComponenteForm onFormSubmit={handleFormSubmit} /><Datos nombre={datos.nombre} materia={datos.materia} /></>}
+
+      <button className='my-button' onClick={togglePokemonModule}>
+        {isPokemonModuleEnabled ? 'Deshabilitar Módulo Bucador Pokemon' : 'Habilitar Módulo Buscador Pokemon'}
+      </button>
+      {isPokemonModuleEnabled && <PokemonSearch/>}
+
+      <button className='my-button' onClick={toggleRickAndMortyEnabled}>
+        {isRickAndMortyModuleEnabled ? 'Deshabilitar Módulo Rick And Marty' : 'Habilitar Módulo Rick And Morty'}
+      </button>
+      {isRickAndMortyModuleEnabled && <RickAndMorty/>}
+      
+      <button className='my-button' onClick={toggleLoginEnabled}>
+        {isLoginModuleEnabled ? 'Deshabilitar Módulo Login Form' : 'Habilitar Módulo Login Form'}
+      </button>
+      {isLoginModuleEnabled && <Login/>}
+
+      <h2 className='Encabezado2'>ARCADE CLICK COUNTER</h2>
+      <Contador/>
+
+    </div>
+    </header>
+    </section>
+  )
+}
+export default App;
